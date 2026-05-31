@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "TravellerProfile": {
+      "title": "TravellerProfile",
+      "description": "User profile containing travel settings, preferences, and authentication details.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The traveler's full display name."
+        },
+        "country": {
+          "type": "string",
+          "description": "The country of origin for custom recommendations."
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "description": "The preferred language for localization and translator features."
+        },
+        "travelInterests": {
+          "type": "array",
+          "description": "List of categories of interest (e.g., Spiritual, Nature, Adventure)."
+        },
+        "budgetRange": {
+          "type": "string",
+          "description": "The traveler's typical budget tier (Budget, Mid-Range, Luxury, Family)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp representing when the user profile was established."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's registered e-mail address."
+        },
+        "picture": {
+          "type": "string",
+          "description": "The secure URL to the user's Google logo/picture."
+        },
+        "googleConnected": {
+          "type": "boolean",
+          "description": "Indicates if the account is verified through Google Auth."
+        }
+      },
+      "required": ["name", "country", "preferredLanguage", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "TravellerProfile",
+      "description": "Profiles for authenticated travelers detailing their travel criteria."
+    }
+  }
+}

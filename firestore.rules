@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net: Default-deny all pathways
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Secure base helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidProfile(profile) {
+      return profile.keys().hasAll(['name', 'country', 'preferredLanguage', 'createdAt'])
+          && profile.name is string && profile.name.size() > 0 && profile.name.size() <= 200
+          && profile.country is string && profile.country.size() > 0 && profile.country.size() <= 100
+          && profile.preferredLanguage is string && profile.preferredLanguage.size() > 0 && profile.preferredLanguage.size() <= 50
+          && profile.createdAt is string && profile.createdAt.size() <= 64;
+    }
+
+    // Match users/{userId} user-owned collection
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow create, update: if isOwner(userId) && isValidId(userId) && isValidProfile(request.resource.data);
+      allow delete: if isOwner(userId) && isValidId(userId);
+    }
+  }
+}

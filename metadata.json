@@ -1,0 +1,6 @@
+{
+  "name": "AI Tourist & Travel Assistant",
+  "description": "An advanced AI-powered currency and travel guide companion with personalized planning, translator, recommendations and emergency support.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
